@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { client } from "@/lib/rpc";
 
@@ -20,8 +21,13 @@ export const useLogout = () => {
             return await response.json();
         },
         onSuccess: () => {
+            toast.success("Logged out successfully");
             queryClient.invalidateQueries({ queryKey: ["current"] });
+            queryClient.invalidateQueries({ queryKey: ["workspaces"] });
             router.refresh();
+        },
+        onError: () => {
+            toast.error("Failed to logout");
         }
     });
 

@@ -1,27 +1,54 @@
-import { Sidebar } from "@/components/sidebar";
-import { Navbar } from "@/components/navbar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
 
-interface DashboardLayoutProps {
+export default async function DashboardLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
+}) {
   return (
-    <div className="min-h-screen">
-      <div className="flex w-full h-full">
-        <div className="hidden lg:block fixed left-0 top-0 lg:w-[264px] h-full overflow-y-auto">
-          <Sidebar />
-        </div>
-        <div className="lg:pl-[264px] w-full">
-          <div className="mx-auto w-full max-w-screen-2xl h-full">
-            <Navbar />
-            <main className="h-full py-8 px-6 flex flex-col">{children}</main>
+    <SidebarProvider>
+      <CreateWorkspaceModal />
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
-          {/* TODO: Footer */}
-        </div>
-      </div>
-    </div>
+        </header>
+        <main className="flex-1 p-4 pt-0">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   );
-};
-
-export default DashboardLayout;
+}

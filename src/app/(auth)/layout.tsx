@@ -17,8 +17,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       <div className="mx-auto max-w-screen-2xl p-4">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="logo" width={59} height={36} />
-            <span className="text-2xl font-bold">WorkStreams.Ai</span>
+            <Image src="/logo.svg" alt="logo" width={164} height={40} />
           </div>
 
           <Button asChild variant="primary">

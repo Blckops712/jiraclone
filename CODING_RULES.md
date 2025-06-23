@@ -223,3 +223,50 @@ Only add complexity when:
 **When in doubt**: Ask for clarification rather than assuming
 **Focus**: Make exactly what's requested, nothing more
 **Goal**: Maintainable, readable code that follows current best practices
+
+---
+
+## MANDATORY: Code Analysis Before Implementation
+
+### **STOP ASSUMING - ALWAYS ANALYZE FIRST**
+
+Before making ANY code change:
+
+1. **MANDATORY: Search for existing patterns** - Use grep/codebase_search to find how similar functionality is already implemented
+2. **MANDATORY: Read related files** - Check imports, exports, and usage patterns in the actual codebase
+3. **MANDATORY: Follow existing conventions** - Don't invent new patterns, use what's already there
+4. **MANDATORY: Verify data structures** - Look at actual return types, don't assume nested objects exist
+
+### **API/Hook Analysis Requirements**
+
+Before working with API calls, hooks, or data handling:
+
+1. **ALWAYS examine the actual API hook implementation first** - Look at the hook's return structure, response format, and how data is accessed
+2. **Check existing onSuccess/onError callback patterns** - See how other components handle the same hooks' responses
+3. **Trace data flow from API → hook → component** - Verify the actual path data takes, don't assume nested structures
+4. **Use grep/search to find similar usage patterns** - Look for other components using the same hooks to see established patterns
+5. **Verify response structure in the actual API route** - Check what the backend actually returns, not what seems logical
+
+### **NEVER:**
+
+- Make assumptions about data structures
+- Invent new patterns when existing ones work
+- Write code without checking how it's done elsewhere in the codebase
+- Guess at function signatures or return types
+- Assume `data.data` structures without verification
+- Deviate from established patterns without explicit reason
+
+### **ALWAYS:**
+
+- Examine existing implementations first
+- Use the same patterns found in the codebase
+- Verify actual data flow and structures
+- Follow established naming and organization conventions
+- Search codebase for existing usage: `grep -r "onSuccess" src/`
+- Check the hook implementation: examine the actual return type
+- Follow the same destructuring patterns used elsewhere
+- Test assumptions against actual code patterns
+
+**If unsure about existing patterns: SEARCH THE CODEBASE FIRST**
+
+This applies to everything - components, hooks, API calls, styling, routing, state management. No exceptions.
