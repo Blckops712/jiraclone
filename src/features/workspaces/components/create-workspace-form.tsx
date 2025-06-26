@@ -24,6 +24,7 @@ import { ImageIcon, X } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -172,6 +173,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                     variant="outline"
                     onClick={onCancel}
                     disabled={isPending}
+                    className={cn(!onCancel && "invisible")}
                   >
                     Cancel
                   </Button>

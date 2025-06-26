@@ -19,11 +19,15 @@ import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/features/auth/components/nav-user";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
@@ -106,12 +110,12 @@ const data = {
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Workspace",
+          url: "/settings",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Members",
+          url: "/members",
         },
         {
           title: "Billing",
@@ -144,13 +148,58 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const workspaceId = useWorkspaceId();
+  const pathname = usePathname();
+
+  const fullHref = (href: string) => {
+    if (href === "/" && workspaceId) {
+      return `/workspaces/${workspaceId}`;
+    }
+    if (href.startsWith("/") && workspaceId) {
+      return `/workspaces/${workspaceId}${href}`;
+    }
+    return href;
+  };
+
+  const isActiveItem = (itemUrl: string, subItems?: { url: string }[]) => {
+    const fullUrl = fullHref(itemUrl);
+
+    // Exact match for current path
+    if (pathname === fullUrl) {
+      return true;
+    }
+
+    // Check if any sub-items match the current path
+    if (subItems) {
+      return subItems.some((subItem) => {
+        const subUrl = fullHref(subItem.url);
+        return pathname === subUrl;
+      });
+    }
+
+    return false;
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <WorkspaceSwitcher />
+        <SidebarGroup>
+          <SidebarGroupLabel>WORKSPACES</SidebarGroupLabel>
+          <WorkspaceSwitcher />
+        </SidebarGroup>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={data.navMain.map((item) => ({
+            ...item,
+            url: fullHref(item.url),
+            isActive: isActiveItem(item.url, item.items),
+            items: item.items?.map((subItem) => ({
+              ...subItem,
+              url: fullHref(subItem.url),
+            })),
+          }))}
+        />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>

@@ -47,7 +47,7 @@ export default async function DashboardLayout({
             </Breadcrumb>
           </div>
         </header>
-        <main className="flex-1 p-4 pt-0">{children}</main>
+        <main className="w-full space-y-4 p-4 overflow-hidden">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

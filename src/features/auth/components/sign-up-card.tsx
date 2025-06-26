@@ -26,8 +26,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
 
-export const SignUpCard = () => {
-  const { mutate, isPending } = useRegister();
+interface SignUpCardProps {
+  workspaceId?: string;
+  inviteCode?: string;
+}
+
+export const SignUpCard = ({ workspaceId, inviteCode }: SignUpCardProps) => {
+  const redirectUrl =
+    workspaceId && inviteCode
+      ? `/workspaces/${workspaceId}/join/${inviteCode}`
+      : undefined;
+
+  const { mutate, isPending } = useRegister({ redirectTo: redirectUrl });
+
+  const hasInvite = !!(workspaceId && inviteCode);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -46,16 +58,24 @@ export const SignUpCard = () => {
   return (
     <Card className="w-full h-full md:w-[487px]">
       <CardHeader className="flex items-center justify-center text-center p-7">
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>
+          {hasInvite ? "Join Workspace" : "Create an account"}
+        </CardTitle>
         <CardDescription>
-          By signing up, you agree to our{" "}
-          <Link href="/terms-of-service" className="underline">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="/privacy-policy" className="underline">
-            Privacy Policy
-          </Link>
+          {hasInvite ? (
+            "Complete your registration to join the workspace"
+          ) : (
+            <>
+              By signing up, you agree to our{" "}
+              <Link href="/terms-of-service" className="underline">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy-policy" className="underline">
+                Privacy Policy
+              </Link>
+            </>
+          )}
         </CardDescription>
       </CardHeader>
       <div className="px-7">
@@ -122,7 +142,11 @@ export const SignUpCard = () => {
                 className="w-full mt-7"
                 type="submit"
               >
-                {isPending ? "Registering..." : "Register"}
+                {isPending
+                  ? "Creating account..."
+                  : hasInvite
+                  ? "Create Account & Join"
+                  : "Create Account"}
               </Button>
             </form>
           </Form>

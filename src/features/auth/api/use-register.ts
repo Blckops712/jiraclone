@@ -8,7 +8,11 @@ import { client } from "@/lib/rpc";
 type ResponseType = InferResponseType<typeof client.api.auth.register.$post>;
 type RequestType = InferRequestType<typeof client.api.auth.register.$post>;
 
-export const useRegister = () => {
+interface UseRegisterProps {
+    redirectTo?: string;
+}
+
+export const useRegister = ({ redirectTo }: UseRegisterProps = {}) => {
     const router = useRouter();
     const queryClient = useQueryClient();
     const mutation = useMutation<
@@ -25,7 +29,12 @@ export const useRegister = () => {
         onSuccess: () => {
             toast.success("Registered successfully");
             queryClient.invalidateQueries({ queryKey: ["current"] });
-            router.refresh();
+
+            if (redirectTo) {
+                router.push(redirectTo);
+            } else {
+                router.refresh();
+            }
         },
         onError: () => {
             toast.error("Failed to register");

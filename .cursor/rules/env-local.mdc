@@ -1,0 +1,23 @@
+---
+description: Env.Local
+globs: 
+alwaysApply: false
+---
+our environment variables are as follows:
+
+If you see these it means they exist in our env.local and have the correct database id's assigned to them for you to use.  If you do not see them and would like to request database functionality for new features you can tell me in chat what you need and the varibles needed so I can put them in the database for you and update this file and env.local so you can use those.
+
+NEXT_PUBLIC_API_URL=http://localhost:3000
+
+NEXT_PUBLIC_APPWRITE_PROJECT_ID=6851def300071c8e4543
+NEXT_PUBLIC_APPWRITE_ENDPOINT=https://nyc.cloud.appwrite.io/v1
+
+
+NEXT_PUBLIC_APPWRITE_DATABASE_ID
+NEXT_PUBLIC_APPWRITE_WORKSPACES_ID
+NEXT_PUBLIC_APPWRITE_MEMBERS_ID
+NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID
+
+
+
+NEXT_APPWRITE_KEY

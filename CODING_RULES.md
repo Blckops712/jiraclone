@@ -56,7 +56,15 @@ src/
 - ✅ Use `export const GET/POST/PUT/DELETE` for API routes
 - ✅ Use `layout.tsx` for nested layouts
 - ✅ Use `loading.tsx`, `error.tsx` for UI states
+- ✅ **Prefer Server-Side Data Fetching** - Use server components with `queries.ts` functions over client-side hooks when possible
 - ❌ Don't mix Pages Router patterns
+
+**Server vs Client Data Fetching:**
+
+- ✅ **Server Components**: Use for initial data loading, better performance, no loading states needed
+- ✅ **Client Components**: Use only when you need interactivity (forms, real-time updates, user interactions)
+- **Example**: Settings pages, profile pages → Server-side data fetching
+- **Example**: Forms, modals, dynamic interactions → Client-side hooks
 
 ### TypeScript
 
